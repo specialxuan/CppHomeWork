@@ -21,10 +21,7 @@ protected:
 public:
     Set() : Head(NULL), Tail(NULL), Count(0) {}
     Set(Set<T> &set);
-    ~Set()
-    {
-        clear();
-    }
+    ~Set() { clear(); }
     int insert(const T &it, int pos = 0);
     int append(const T &it);
     int remove(T &it, int pos = 0);
@@ -32,20 +29,14 @@ public:
     bool getData(T &it, int pos = 0);
     bool setData(const T &it, int pos = 0);
     bool ifExist(const T &it);
-    bool isEmpty() const
-    {
-        return Count == 0;
-    }
+    bool isEmpty() const { return Count == 0; }
     int addList(const Set<T> &list);
     Set<T> operator+(const Set<T> &set) const;
     Set<T> operator-(const Set<T> &set) const;
     Set<T> operator^(const Set<T> &set) const;
     Set<T> &operator=(const Set<T> &set);
     void clear();
-    int length() const
-    {
-        return Count;
-    }
+    int length() const { return Count; }
 };
 
 template <class T>
