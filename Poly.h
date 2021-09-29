@@ -92,6 +92,7 @@ public:
     Poly operator*(const Poly &pn) const;
     Poly &operator*=(const Poly &pn);
     bool operator==(const Poly &pn);
+    bool operator!=(const Poly &pn);
     double value(double x);
     friend ostream &operator<<(ostream &out, Poly &pn);
     Mono &operator[](int pos) { return Polynomial[pos]; }
@@ -238,7 +239,7 @@ Poly Poly::operator*(const Mono mn) const
     Poly product = *this;
     for (int i = 0; i < product.Polynomial.length(); i++)
         product[i] *= mn;
-    
+
     return product;
 }
 
@@ -276,6 +277,31 @@ Poly &Poly::operator*=(const Poly &pn)
         }
     *this = product;
     return *this;
+}
+
+bool Poly::operator==(const Poly &pn)
+{
+    if (Polynomial.length() == pn.Polynomial.length())
+    {
+        for (int i = 0; i < Polynomial.length(); i++)
+            if (Polynomial[i] != pn[i])
+                return false;
+        return true;
+    }
+    return false;
+}
+
+bool Poly::operator!=(const Poly &pn)
+{
+    return !(*this == pn);
+}
+
+double Poly::value(double x)
+{
+    double value = 0;
+    for (int i = 0; i < Polynomial.length(); i++)
+        value += Polynomial[i].value(x);
+    return value;
 }
 
 ostream &operator<<(ostream &out, Poly &pn)

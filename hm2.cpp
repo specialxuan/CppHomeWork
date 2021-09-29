@@ -15,16 +15,20 @@ int main ()
     pn4 = pn2 + pn3;
     pn4 += pn1;
     pn2 -= pn4;
+    // cout << "pn1 = " << pn1 << "\n";
+    // cout << "pn2 = " << pn2 << "\n";
+    // cout << "pn3 = " << pn3 << "\n";
+    // cout << "pn4 = " << pn4 << "\n";
+
+    pn4 = pn2 * pn3;
     cout << "pn1 = " << pn1 << "\n";
     cout << "pn2 = " << pn2 << "\n";
     cout << "pn3 = " << pn3 << "\n";
     cout << "pn4 = " << pn4 << "\n";
 
-    pn4 = pn2 * pn3;
-    // cout << "pn1 = " << pn1 << "\n";
-    cout << "pn2 = " << pn2 << "\n";
-    cout << "pn3 = " << pn3 << "\n";
-    cout << "pn4 = " << pn4 << "\n";
+    pn2 = pn4;
+    cout << (pn4 == pn2) << "\n";
+    cout << pn4.value(1) << "\n";
 
     return 0;
 }
