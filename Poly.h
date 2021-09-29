@@ -42,6 +42,19 @@ struct Mono
             coe -= mn.coe;
         return *this;
     }
+    Mono operator*(const Mono &mn) const
+    {
+        Mono product = *this;
+        product.coe *= mn.coe;
+        product.exp += mn.exp;
+        return product;
+    }
+    Mono &operator*=(const Mono &mn)
+    {
+        coe *= mn.coe;
+        exp += mn.exp;
+        return *this;
+    }
     bool operator==(const Mono &mn) { return (exp == mn.exp && coe == mn.coe); }
     bool operator!=(const Mono &mn) { return (exp != mn.exp || coe != mn.coe); }
     friend ostream &operator<<(ostream &out, Mono mn)
@@ -74,8 +87,10 @@ public:
     Poly &operator-=(const Mono mn);
     Poly operator-(const Poly &pn) const;
     Poly &operator-=(const Poly &pn);
-    Poly operator*(Mono mn);
-    Poly operator*(const Poly &pn);
+    Poly operator*(const Mono mn) const;
+    Poly &operator*=(const Mono mn);
+    Poly operator*(const Poly &pn) const;
+    Poly &operator*=(const Poly &pn);
     bool operator==(const Poly &pn);
     double value(double x);
     friend ostream &operator<<(ostream &out, Poly &pn);
@@ -166,7 +181,7 @@ Poly Poly::operator-(const Mono mn) const
         if (t.sameOrder(mn))
         { //合并同类项
             t -= mn;
-            if(t.coe == 0)
+            if (t.coe == 0)
                 sum.Polynomial.remove(t, i);
             return sum;
         }
@@ -215,6 +230,51 @@ Poly &Poly::operator-=(const Poly &pn)
 {
     for (int i = 0; i < pn.Polynomial.length(); i++)
         *this -= pn[i];
+    return *this;
+}
+
+Poly Poly::operator*(const Mono mn) const
+{
+    Poly product = *this;
+    for (int i = 0; i < product.Polynomial.length(); i++)
+        product[i] *= mn;
+    
+    return product;
+}
+
+Poly &Poly::operator*=(const Mono mn)
+{
+    for (int i = 0; i < Polynomial.length(); i++)
+        Polynomial[i] *= mn;
+
+    return *this;
+}
+
+Poly Poly::operator*(const Poly &pn) const
+{
+    Poly product;
+    Mono temp = 0;
+    for (int i = 0; i < Polynomial.length(); i++)
+        for (int j = 0; j < pn.Polynomial.length(); j++)
+        {
+            temp = Polynomial[i] * pn[j];
+            product += temp;
+        }
+
+    return product;
+}
+
+Poly &Poly::operator*=(const Poly &pn)
+{
+    Poly product;
+    Mono temp = 0;
+    for (int i = 0; i < Polynomial.length(); i++)
+        for (int j = 0; j < pn.Polynomial.length(); j++)
+        {
+            temp = Polynomial[i] * pn[j];
+            product += temp;
+        }
+    *this = product;
     return *this;
 }
 
