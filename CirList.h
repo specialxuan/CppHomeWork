@@ -20,7 +20,7 @@ protected:
     int Count;
 
 public:
-    CirList() : Head(NULL), Tail(NULL), Cur(NULL),zero(0), Count(0) {}
+    CirList() : Head(NULL), Tail(NULL), Cur(NULL), zero(0), Count(0) {}
     ~CirList() { Clear(); }
     int insert(const T &it, int pos = 0);
     int append(const T &it) { return insert(it, Count); }
@@ -109,9 +109,9 @@ int CirList<T>::remove(T &it, int pos)
 template <class T>
 T &CirList<T>::operator[](int pos)
 {
-    if (Count == 0 ||pos < -1 || pos >= Count)
+    if (Count == 0 || pos < -1 || pos >= Count)
         return zero;
-    
+
     if (pos > -1)
     {
         Cur = Head;
@@ -120,6 +120,24 @@ T &CirList<T>::operator[](int pos)
     }
 
     return Cur->data;
+}
+
+template <class T>
+const T &CirList<T>::operator[](int pos) const
+{
+    if (Count == 0 || pos < -1 || pos >= Count)
+        return zero;
+
+    Node<T> *p = Cur;
+
+    if (pos > -1)
+    {
+        p = Head;
+        for (int i = 0; i < pos; i++)
+            p = p->next;
+    }
+
+    return p->data;
 }
 
 template <class T>
