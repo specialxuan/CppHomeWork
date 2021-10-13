@@ -1,7 +1,5 @@
 #include "Poly.h"
 
-    
-
 int main ()
 {
     Poly pn1, pn2;

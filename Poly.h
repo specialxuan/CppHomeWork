@@ -14,6 +14,7 @@ struct Mono
     {
         exp = mn.exp;
         coe = mn.coe;
+
         return *this;
     }
     Mono operator+(const Mono &mn) const
@@ -21,12 +22,14 @@ struct Mono
         Mono sum = *this;
         if (sum.sameOrder(mn))
             sum.coe += mn.coe;
+
         return sum;
     }
     Mono &operator+=(const Mono &mn)
     {
         if (this->sameOrder(mn))
             coe += mn.coe;
+
         return *this;
     }
     Mono operator-(const Mono &mn) const
@@ -34,12 +37,14 @@ struct Mono
         Mono sum = *this;
         if (sum.sameOrder(mn))
             sum.coe -= mn.coe;
+
         return sum;
     }
     Mono &operator-=(const Mono &mn)
     {
         if (this->sameOrder(mn))
             coe -= mn.coe;
+
         return *this;
     }
     Mono operator*(const Mono &mn) const
@@ -47,12 +52,14 @@ struct Mono
         Mono product = *this;
         product.coe *= mn.coe;
         product.exp += mn.exp;
+
         return product;
     }
     Mono &operator*=(const Mono &mn)
     {
         coe *= mn.coe;
         exp += mn.exp;
+
         return *this;
     }
     bool operator==(const Mono &mn) { return (exp == mn.exp && coe == mn.coe); }
@@ -60,6 +67,7 @@ struct Mono
     friend ostream &operator<<(ostream &out, Mono mn)
     {
         out << " " << mn.coe << "x^" << mn.exp << " ";
+
         return out;
     }
 };
@@ -134,6 +142,7 @@ Poly Poly::operator+(const Mono mn) const
         }
     }
     sum.Polynomial.append(mn);
+
     return sum; //追加新项
 }
 
@@ -154,6 +163,7 @@ Poly &Poly::operator+=(const Mono mn)
         }
     }
     Polynomial.append(mn);
+
     return *this; //追加新项
 }
 
@@ -162,6 +172,7 @@ Poly Poly::operator+(const Poly &pn) const
     Poly sum = *this;
     for (int i = 0; i < pn.Polynomial.length(); i++)
         sum += pn[i];
+
     return sum;
 }
 
@@ -169,6 +180,7 @@ Poly &Poly::operator+=(const Poly &pn)
 {
     for (int i = 0; i < pn.Polynomial.length(); i++)
         *this += pn[i];
+
     return *this;
 }
 
@@ -193,6 +205,7 @@ Poly Poly::operator-(const Mono mn) const
         }
     }
     sum.Polynomial.append(zero - mn);
+
     return sum; //追加新项
 }
 
@@ -216,6 +229,7 @@ Poly &Poly::operator-=(const Mono mn)
         }
     }
     Polynomial.append(zero - mn);
+
     return *this; //追加新项
 }
 
@@ -224,6 +238,7 @@ Poly Poly::operator-(const Poly &pn) const
     Poly sum = *this;
     for (int i = 0; i < pn.Polynomial.length(); i++)
         sum -= pn[i];
+
     return sum;
 }
 
@@ -231,6 +246,7 @@ Poly &Poly::operator-=(const Poly &pn)
 {
     for (int i = 0; i < pn.Polynomial.length(); i++)
         *this -= pn[i];
+
     return *this;
 }
 
@@ -276,6 +292,7 @@ Poly &Poly::operator*=(const Poly &pn)
             product += temp;
         }
     *this = product;
+
     return *this;
 }
 
@@ -288,6 +305,7 @@ bool Poly::operator==(const Poly &pn)
                 return false;
         return true;
     }
+
     return false;
 }
 
@@ -301,6 +319,7 @@ double Poly::value(double x)
     double value = 0;
     for (int i = 0; i < Polynomial.length(); i++)
         value += Polynomial[i].value(x);
+
     return value;
 }
 
