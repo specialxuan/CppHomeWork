@@ -12,15 +12,16 @@ struct Node
 };
 
 template <class T>
-class Set
+class LinkList
 {
 protected:
     Node<T> *Head, *Tail;
+    T zero;
     int Count;
 
 public:
-    Set() : Head(NULL), Tail(NULL), Count(0) {}
-    ~Set()
+    LinkList() : Head(NULL), Tail(NULL), Count(0) {}
+    ~LinkList()
     {
         clear();
     }
@@ -37,8 +38,10 @@ public:
         return Count == 0;
     }
 
-    int addList(const Set<T> &list);
-    Set<T> operator+(const Set<T> &list) const;
+    int addList(const LinkList<T> &list);
+    LinkList<T> operator+(const LinkList<T> &list) const;
+    T &operator[](int pos);
+    const T &operator[](int pos) const;
 
     void clear();
     int length()
@@ -48,7 +51,7 @@ public:
 };
 
 template <class T>
-int Set<T>::insert(const T &it, int pos)
+int LinkList<T>::insert(const T &it, int pos)
 {
     if (pos < 0 || pos > Count)
         return -1;
@@ -80,7 +83,7 @@ int Set<T>::insert(const T &it, int pos)
 }
 
 template <class T>
-int Set<T>::remove(T &it, int pos)
+int LinkList<T>::remove(T &it, int pos)
 {
     if (Count == 0 || pos >= Count || pos < 0)
         return -1;
@@ -109,7 +112,7 @@ int Set<T>::remove(T &it, int pos)
 }
 
 template <class T>
-bool Set<T>::getData(T &it, int pos)
+bool LinkList<T>::getData(T &it, int pos)
 {
     if (pos < 0 || pos >= Count)
         return false;
@@ -120,9 +123,32 @@ bool Set<T>::getData(T &it, int pos)
     it = p->data;
     return true;
 }
+template <class T>
+T &LinkList<T>::operator[](int pos) 
+{
+    if (pos < 0 || pos >= Count)
+        return zero;
+
+    Node<T> *p = Head;
+    for (int i = 0; i < pos; i++)
+        p = p->next;
+    return p->data;
+}
 
 template <class T>
-bool Set<T>::setData(const T &it, int pos)
+const T &LinkList<T>::operator[](int pos) const
+{
+    if (pos < 0 || pos >= Count)
+        return zero;
+
+    Node<T> *p = Head;
+    for (int i = 0; i < pos; i++)
+        p = p->next;
+    return p->data;
+}
+
+template <class T>
+bool LinkList<T>::setData(const T &it, int pos)
 {
     if (pos < 0 || pos >= Count)
         return false;
@@ -135,7 +161,7 @@ bool Set<T>::setData(const T &it, int pos)
 }
 
 template <class T>
-int Set<T>::addList(const Set<T> &list)
+int LinkList<T>::addList(const LinkList<T> &list)
 {
     if (list.isEmpty())
         return Count;
@@ -150,9 +176,9 @@ int Set<T>::addList(const Set<T> &list)
 }
 
 template<class T>
-Set<T> Set<T>::operator+(const Set<T> &list) const
+LinkList<T> LinkList<T>::operator+(const LinkList<T> &list) const
 {
-    Set<T> newList;
+    LinkList<T> newList;
     T tmp;
     if (!this->isEmpty())
         for (int i = 0; i < this->Count; i++)
@@ -172,7 +198,7 @@ Set<T> Set<T>::operator+(const Set<T> &list) const
 }
 
 template <class T>
-void Set<T>::clear()
+void LinkList<T>::clear()
 {
     Node<T> *p = Head;
     while (p)
