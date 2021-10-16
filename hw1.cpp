@@ -1,4 +1,3 @@
-// #include "LinkList.h"
 #include "Set.h"
 
 void output(Set<int> &set)
