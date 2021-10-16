@@ -9,7 +9,7 @@ void output(Set<int> &set)
         set.getData(output, i);
         cout << output << ",";
     }
-    cout << "**\n";
+    cout << "\n";
 }
 
 int main(int argc, char *argv[])
