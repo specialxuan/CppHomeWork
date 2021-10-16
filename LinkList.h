@@ -21,33 +21,18 @@ protected:
 
 public:
     LinkList() : Head(NULL), Tail(NULL), Count(0) {}
-    ~LinkList()
-    {
-        clear();
-    }
+    ~LinkList() { clear(); }
     int insert(const T &it, int pos = 0);
-    int append(const T &it)
-    {
-        return insert(it, Count);
-    }
+    int append(const T &it) { return insert(it, Count); }
     int remove(T &it, int pos = 0);
     bool getData(T &it, int pos = 0);
     bool setData(const T &it, int pos = 0);
-    bool isEmpty()
-    {
-        return Count == 0;
-    }
-
-    int addList(const LinkList<T> &list);
-    LinkList<T> operator+(const LinkList<T> &list) const;
+    bool isEmpty() { return Count == 0; }
     T &operator[](int pos);
     const T &operator[](int pos) const;
 
     void clear();
-    int length()
-    {
-        return Count;
-    }
+    int length() { return Count; }
 };
 
 template <class T>
@@ -158,43 +143,6 @@ bool LinkList<T>::setData(const T &it, int pos)
         p = p->next;
     p->data = it;
     return true;
-}
-
-template <class T>
-int LinkList<T>::addList(const LinkList<T> &list)
-{
-    if (list.isEmpty())
-        return Count;
-
-    T tmp;
-    for (int i = 0; i < list.length(); i++)
-    {
-        list.getData(tmp, i);
-        this->append(tmp);
-    }
-    return Count;
-}
-
-template<class T>
-LinkList<T> LinkList<T>::operator+(const LinkList<T> &list) const
-{
-    LinkList<T> newList;
-    T tmp;
-    if (!this->isEmpty())
-        for (int i = 0; i < this->Count; i++)
-        {
-            this->getData(tmp, i);
-            newList.append(tmp);
-        }
-        
-    if (!list.isEmpty())
-        for (int i = 0; i < list.length(); i++)
-        {
-            list.getData(tmp, i);
-            newList.append(tmp);
-        }
-
-    return newList;
 }
 
 template <class T>

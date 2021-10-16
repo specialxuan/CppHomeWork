@@ -64,10 +64,9 @@ struct Mono
     }
     bool operator==(const Mono &mn) { return (exp == mn.exp && coe == mn.coe); }
     bool operator!=(const Mono &mn) { return (exp != mn.exp || coe != mn.coe); }
-    friend ostream &operator<<(ostream &out, Mono mn)
+    friend ostream &operator<<(ostream &out, const Mono &pmn)
     {
-        out << " " << mn.coe << "x^" << mn.exp << " ";
-
+        out << " " << pmn.coe << "x^" << pmn.exp << " ";
         return out;
     }
 };
@@ -102,7 +101,7 @@ public:
     bool operator==(const Poly &pn);
     bool operator!=(const Poly &pn);
     double value(double x);
-    friend ostream &operator<<(ostream &out, Poly &pn);
+    friend ostream &operator<<(ostream &out, const Poly &pn);
     Mono &operator[](int pos) { return Polynomial[pos]; }
     const Mono &operator[](int pos) const { return Polynomial[pos]; }
 };
@@ -323,11 +322,11 @@ double Poly::value(double x)
     return value;
 }
 
-ostream &operator<<(ostream &out, Poly &pn)
+ostream &operator<<(ostream &out, const Poly &pn)
 {
+
     for (int i = 0; i < pn.Polynomial.length(); i++)
         out << pn[i] << "+";
     out << " 0 ";
-
     return out;
 }

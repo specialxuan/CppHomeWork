@@ -27,6 +27,6 @@ int main ()
     pn2 = pn4;
     cout << (pn4 == pn2) << "\n";
     cout << pn4.value(1) << "\n";
-
+    
     return 0;
 }
