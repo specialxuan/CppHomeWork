@@ -1,6 +1,6 @@
+#include "LinkList.h"
 #include <algorithm>
 #include <iostream>
-#include "LinkList.h"
 using namespace std;
 
 int greedy(int total, int thisKinds, int totalKinds, int *each, int *num, LinkList<int *> &solutions)
@@ -9,13 +9,11 @@ int greedy(int total, int thisKinds, int totalKinds, int *each, int *num, LinkLi
         return 0;
 
     int count = 0, n = total / each[thisKinds - 1];
-
     if (total % each[thisKinds - 1] == 0)
     {
         num[thisKinds - 1] = n;
         int *newnum = new int(totalKinds);
         memcpy(newnum, num, totalKinds * sizeof(int));
-
         solutions.append(newnum);
         count++;
     }
@@ -24,7 +22,6 @@ int greedy(int total, int thisKinds, int totalKinds, int *each, int *num, LinkLi
         num[thisKinds - 1] = n;
         count += greedy(total - each[thisKinds - 1] * n, thisKinds - 1, totalKinds, each, num, solutions);
     }
-    
     return count;
 }
 
@@ -50,6 +47,5 @@ int main()
             cout << solutions[i][j] << ",";
         cout << "\n";
     }
-
     return 0;
 }

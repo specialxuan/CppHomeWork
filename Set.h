@@ -7,7 +7,6 @@ struct Node
 {
     T data;
     Node<T> *next;
-
     Node(const T &item, Node<T> *pnext = NULL) : data(item), next(pnext) {}
 };
 
@@ -203,7 +202,7 @@ int Set<T>::addList(const Set<T> &list)
     if (list.isEmpty())
         return Count;
 
-    T tmp;
+    T tmp = 0;
     for (int i = 0; i < list.length(); i++)
     {
         list.getData(tmp, i);
@@ -230,7 +229,6 @@ Set<T> Set<T>::operator+(const Set<T> &set) const
             newSet.append(p->data);
             p = p->next;
         }
-
     return newSet;
 }
 
@@ -245,7 +243,6 @@ Set<T> Set<T>::operator-(const Set<T> &set) const
         newSet.erase(p->data);
         p = p->next;
     }
-
     return newSet;
 }
 
@@ -254,7 +251,6 @@ Set<T> Set<T>::operator^(const Set<T> &set) const
 {
     Set<T> newSet;
     newSet = *this - (*this - set);
-
     return newSet;
 }
 

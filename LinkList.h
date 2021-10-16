@@ -7,7 +7,6 @@ struct Node
 {
     T data;
     Node<T> *next;
-
     Node(const T &item, Node<T> *pnext = NULL) : data(item), next(pnext) {}
 };
 
@@ -30,7 +29,6 @@ public:
     bool isEmpty() { return Count == 0; }
     T &operator[](int pos);
     const T &operator[](int pos) const;
-
     void clear();
     int length() { return Count; }
 };
@@ -101,7 +99,7 @@ bool LinkList<T>::getData(T &it, int pos)
 {
     if (pos < 0 || pos >= Count)
         return false;
-    
+
     Node<T> *p = Head;
     for (int i = 0; i < pos; i++)
         p = p->next;
@@ -109,7 +107,7 @@ bool LinkList<T>::getData(T &it, int pos)
     return true;
 }
 template <class T>
-T &LinkList<T>::operator[](int pos) 
+T &LinkList<T>::operator[](int pos)
 {
     if (pos < 0 || pos >= Count)
         return zero;
@@ -137,7 +135,7 @@ bool LinkList<T>::setData(const T &it, int pos)
 {
     if (pos < 0 || pos >= Count)
         return false;
-    
+
     Node<T> *p = Head;
     for (int i = 0; i < pos; i++)
         p = p->next;

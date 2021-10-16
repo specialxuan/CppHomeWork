@@ -8,7 +8,6 @@ struct AVLNode
     T data;
     int height;
     AVLNode<T> *left, *right;
-
     AVLNode() : height(0), left(NULL), right(NULL) {}
     AVLNode(T d, AVLNode<T> *l = 0, AVLNode<T> *r = 0) : data(d), height(0), left(l), right(r) {}
     friend ostream &operator<<(ostream &out, const AVLNode<T> &pn)
@@ -44,9 +43,11 @@ protected:
     bool removeNode(const T &x, AVLNode<T> *&tree);
     void itInOrder(T *array, AVLNode<T> *tree, int &i) const;
     AVLNode<T> *searchNode(const T &key, AVLNode<T> *tree) const;
+    void clear(AVLNode<T> *&tree);
 
 public:
     AVLTree() : root(NULL), count(0) {}
+    ~AVLTree() { clear(root); }
     bool insert(const T &x) { return insertNode(x, root); }
     bool remove(const T &x) { return removeNode(x, root); }
     AVLNode<T> *search(const T &key) const { return searchNode(key, root); }
@@ -88,6 +89,7 @@ void AVLTree<T>::rotateLeft(AVLNode<T> *&tree)
 {
     if (!tree || !tree->right)
         return;
+
     AVLNode<T> *t = tree->right;
     tree->right = t->left;
     t->left = tree;
@@ -101,6 +103,7 @@ void AVLTree<T>::rotateRight(AVLNode<T> *&tree)
 {
     if (!tree || !tree->left)
         return;
+
     AVLNode<T> *t = tree->left;
     tree->left = t->right;
     t->right = tree;
@@ -138,7 +141,6 @@ bool AVLTree<T>::insertNode(const T &x, AVLNode<T> *&tree)
             return true;
         }
     }
-
     else if (x > tree->data)
     {
         if (insertNode(x, tree->right))
@@ -175,8 +177,8 @@ bool AVLTree<T>::removeNode(const T &x, AVLNode<T> *&tree)
                     rotateRight(tree->right);
                 rotateLeft(tree);
             }
+            return true;
         }
-        return true;
     }
     else if (x > tree->data)
     {
@@ -190,8 +192,8 @@ bool AVLTree<T>::removeNode(const T &x, AVLNode<T> *&tree)
                     rotateLeft(tree->left);
                 rotateRight(tree);
             }
+            return true;
         }
-        return true;
     }
     else if (x == tree->data)
     {
@@ -232,6 +234,17 @@ bool AVLTree<T>::removeNode(const T &x, AVLNode<T> *&tree)
 }
 
 template <class T>
+void AVLTree<T>::itInOrder(T *array, AVLNode<T> *tree, int &i) const
+{
+    if (!tree)
+        return;
+    itInOrder(array, tree->left, i);
+    array[i++] = tree->data;
+    itInOrder(array, tree->right, i);
+    return;
+}
+
+template <class T>
 AVLNode<T> *AVLTree<T>::searchNode(const T &key, AVLNode<T> *tree) const
 {
     if (!tree)
@@ -246,12 +259,14 @@ AVLNode<T> *AVLTree<T>::searchNode(const T &key, AVLNode<T> *tree) const
 }
 
 template <class T>
-void AVLTree<T>::itInOrder(T *array, AVLNode<T> *tree, int &i) const
+void AVLTree<T>::clear(AVLNode<T> *&tree)
 {
     if (!tree)
         return;
-    itInOrder(array, tree->left, i);
-    array[i++] = tree->data;
-    itInOrder(array, tree->right, i);
+    clear(tree->left);
+    clear(tree->right);
+    delete tree;
+    tree = NULL;
+    count--;
     return;
 }

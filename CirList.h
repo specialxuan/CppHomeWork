@@ -7,7 +7,6 @@ struct Node
 {
     T data;
     Node<T> *next;
-
     Node(const T &item, Node<T> *pnext = NULL) : data(item), next(pnext) {}
 };
 
@@ -40,36 +39,34 @@ int CirList<T>::insert(const T &it, int pos)
 
     Count++;
     if (pos == 0)
-    { // 数据插入到头部
+    {
         Cur = new Node<T>(it, Head);
         Head = Cur;
         if (Count == 1)
-            Tail = Head; //只有一个节点
+            Tail = Head;
         Tail->next = Head;
     }
     else if (pos == Count - 1)
-    { // 数据插入到尾部
+    {
         Tail->next = new Node<T>(it, Head);
         Tail = Tail->next;
         Cur = Tail;
     }
     else if (pos == -1)
     {
-        // 数据插入到上次访问位置后面
         Cur->next = new Node<T>(it, Cur->next);
         if (Tail == Cur)
             Tail = Cur->next;
         Cur = Cur->next;
     }
     else
-    { // 数据插入到其它位置
+    {
         Node<T> *p = Head;
         for (int i = 1; i < pos; pos++)
             p = p->next;
         Cur = new Node<T>(it, p->next);
         p->next = Cur;
     }
-
     return Count;
 }
 
@@ -82,14 +79,14 @@ int CirList<T>::remove(T &it, int pos)
     Node<T> *p = Head;
     Cur = Head;
     if (pos == 0)
-    { //移除第一个节点
+    {
         it = p->data;
         Head = p->next;
         Tail->next = Head;
         Cur = Tail;
     }
     else
-    { //移除其它节点
+    {
         for (int i = 1; i < pos; i++)
             Cur = Cur->next;
         p = Cur->next;
@@ -100,9 +97,8 @@ int CirList<T>::remove(T &it, int pos)
     }
     delete p;
     Count--;
-    if (Count == 0) //表空
+    if (Count == 0)
         Tail = Head = Cur = 0;
-
     return Count;
 }
 
@@ -118,7 +114,6 @@ T &CirList<T>::operator[](int pos)
         for (int i = 0; i < pos; i++)
             Cur = Cur->next;
     }
-
     return Cur->data;
 }
 
@@ -129,14 +124,12 @@ const T &CirList<T>::operator[](int pos) const
         return zero;
 
     Node<T> *p = Cur;
-
     if (pos > -1)
     {
         p = Head;
         for (int i = 0; i < pos; i++)
             p = p->next;
     }
-
     return p->data;
 }
 
