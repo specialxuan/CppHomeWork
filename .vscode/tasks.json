@@ -1,0 +1,33 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Compile",
+            "command": "g++",
+            "args": [
+                "${file}", // input file
+                "-o", // generate executable target file
+                "${fileDirname}/exe/${fileBasenameNoExtension}.exe", // output file
+                "-g", // debug information
+                "-m64", // generate 64-bit
+                "-Wall", // prints all warning messages
+                "-static-libgcc", // use static livgcc
+                "-fexec-charset=GBK", // set the execution character set to GBK
+                "-fopenmp", // enable openmp
+                "-L", // add directory for linking
+                "D:/Program Files/Microsoft SDKs/MPI/Lib/x64", // mpi library
+                "-I", // add directory for header files
+                "D:/Program Files/Microsoft SDKs/MPI/Include" //mpi include
+            ],
+            "type": "process",
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "silent",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": "$gcc"
+        },
+    ]
+}
