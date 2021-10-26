@@ -14,12 +14,12 @@ int main()
     pn4 += pn1;
     pn2 -= pn4;
     pn4 = pn2 * pn3;
-    cout << "pn1 = " << pn1 << "\n";
-    cout << "pn2 = " << pn2 << "\n";
-    cout << "pn3 = " << pn3 << "\n";
-    cout << "pn4 = " << pn4 << "\n";
+    cout << "pn1 = " << pn1 << endl;
+    cout << "pn2 = " << pn2 << endl;
+    cout << "pn3 = " << pn3 << endl;
+    cout << "pn4 = " << pn4 << endl;
     pn2 = pn4;
-    cout << (pn4 == pn2) << "\n";
-    cout << pn4.value(1) << "\n";
+    cout << (pn4 == pn2) << endl;
+    cout << pn4.value(1) << endl;
     return 0;
 }

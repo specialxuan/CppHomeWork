@@ -40,12 +40,12 @@ int main()
 
     greedy(total, kinds, kinds, each, num, solutions);
 
-    cout << solutions.length() << "\n";
+    cout << solutions.length() << endl;
     for (int i = 0; i < solutions.length(); i++)
     {
         for (int j = 0; j < kinds; j++)
             cout << solutions[i][j] << ",";
-        cout << "\n";
+        cout << endl;
     }
     return 0;
 }

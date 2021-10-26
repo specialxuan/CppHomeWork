@@ -50,6 +50,7 @@ public:
     bool insert(const T &x) { return insertNode(x, root); }
     bool remove(const T &x) { return removeNode(x, root); }
     AVLNode<T> *search(const T &key) const { return searchNode(key, root); }
+    const AVLNode<T> *pRoot() const { return root; }
     int length() const { return count; }
     T *inOrder() const
     {

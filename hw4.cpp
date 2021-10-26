@@ -14,17 +14,17 @@ int main()
     tree.insert(9);
     tree.insert(10);
     tree.insert(11);
-    cout << tree << " " << tree.length() << "\n";
+    cout << tree << " " << tree.length() << endl;
     int *array = tree.inOrder();
     for (int i = 0; i < tree.length(); i++)
         cout << array[i] << ",";
-    cout << "\n";
+    cout << endl;
     tree.remove(4);
     tree.remove(5);
     tree.remove(6);
-    cout << tree << " " << tree.length() << "\n";
+    cout << tree << " " << tree.length() << endl;
     AVLNode<int> *p = tree.search(2);
-    cout << p->data << "\n";
+    cout << p->data << endl;
     tree.~AVLTree();
     tree.insert(3);
     tree.insert(4);
@@ -37,7 +37,7 @@ int main()
     tree.insert(9);
     tree.insert(10);
     tree.insert(11);
-    cout << tree << " " << tree.length() << "\n";
+    cout << tree << " " << tree.length() << endl;
 
     return 0;
 }
