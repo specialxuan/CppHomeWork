@@ -1,5 +1,9 @@
 #include "AVLTree.h"
+#include <algorithm>
+#include <list>
+#include <set>
 #include <time.h>
+#include <vector>
 
 struct cmpNode
 {
@@ -30,56 +34,59 @@ struct SpaceNode
     }
 };
 
-class SpaceRange : protected AVLTree<cmpNode>
+class SpaceRange
 {
 protected:
     SpaceNode *nodes;
+    AVLTree<cmpNode> x, y, z;
 
-    bool rangeNodeX(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, AVLTree<cmpNode> &y) const;
-    bool rangeNodeY(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, AVLTree<cmpNode> &z) const;
-    bool rangeNodeZ(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, AVLTree<int> &id) const;
+    bool rangeNodeX(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, set<int> &id) const;
+    bool rangeNodeY(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, list<int> &id) const;
+    bool rangeNodeZ(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, set<int> &id) const;
 
 public:
     SpaceRange() {}
-    SpaceRange(int n, double *x, double *y, double *z)
+    SpaceRange(int n, double *xn, double *yn, double *zn)
     {
         nodes = new SpaceNode[n]();
-        cmpNode t;
+        cmpNode tx, ty, tz;
         for (int i = 0; i < n; i++)
         {
-            nodes[i].x = x[i];
-            nodes[i].y = y[i];
-            nodes[i].z = z[i];
-            t.cmp = x[i];
-            t.index = i;
-            this->insert(t);
+            tx.cmp = nodes[i].x = xn[i];
+            ty.cmp = nodes[i].y = yn[i];
+            tz.cmp = nodes[i].z = zn[i];
+            tx.index = ty.index = tz.index = i;
+            x.insert(tx);
+            y.insert(ty);
+            z.insert(tz);
         }
     }
     ~SpaceRange() {}
-    int range(double x1, double x2, double y1, double y2, double z1, double z2, int *&out)
+    int range(double x1, double x2, double y1, double y2, double z1, double z2, list<int> &out)
     {
         if (x1 > x2 || y1 > y2 || z1 > z2)
             return 0;
 
-        AVLTree<cmpNode> y, z;
-        AVLTree<int> id;
-        rangeNodeX(x1, x2, root, y);
-        rangeNodeY(y1, y2, y.pRoot(), z);
-        rangeNodeZ(z1, z2, z.pRoot(), id);
+        list<int> idx, idy, idz, id;
 
-        out = id.inOrder();
-        return id.length();
-    }
+        rangeNodeY(x1, x2, x.pRoot(), idx);
+        rangeNodeY(y1, y2, y.pRoot(), idy);
+        rangeNodeY(z1, z2, z.pRoot(), idz);
 
-    friend ostream &operator<<(ostream &out, const SpaceRange &pn)
-    {
-        if (pn.root)
-            out << *pn.root;
-        return out;
+        // cout << idx.size() << " " << idy.size() << " " << idz.size() << endl;
+
+        idx.sort();
+        idy.sort();
+        idz.sort();
+
+        set_intersection(idx.begin(), idx.end(), idy.begin(), idy.end(), inserter(id, id.begin()));
+        set_intersection(id.begin(), id.end(), idz.begin(), idz.end(), insert_iterator<list<int>>(out, out.begin()));
+
+        return out.size();
     }
 };
 
-bool SpaceRange::rangeNodeX(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, AVLTree<cmpNode> &y) const
+bool SpaceRange::rangeNodeY(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, list<int> &id) const
 {
     if (!tree)
     {
@@ -87,75 +94,19 @@ bool SpaceRange::rangeNodeX(const cmpNode &n1, const cmpNode &n2, const AVLNode<
     }
     else if (tree->data < n1)
     {
-        rangeNodeX(n1, n2, tree->right, y);
+        rangeNodeY(n1, n2, tree->right, id);
         return true;
     }
     else if (tree->data >= n1 && tree->data <= n2)
     {
-        cmpNode t(nodes[tree->data.index].y, tree->data.index);
-        y.insert(t);
-        rangeNodeX(n1, n2, tree->left, y);
-        rangeNodeX(n1, n2, tree->right, y);
+        id.push_back(tree->data.index);
+        rangeNodeY(n1, n2, tree->left, id);
+        rangeNodeY(n1, n2, tree->right, id);
         return true;
     }
     else if (tree->data > n2)
     {
-        rangeNodeX(n1, n2, tree->left, y);
-        return true;
-    }
-
-    return false;
-}
-
-bool SpaceRange::rangeNodeY(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, AVLTree<cmpNode> &z) const
-{
-    if (!tree)
-    {
-        return true;
-    }
-    else if (tree->data < n1)
-    {
-        rangeNodeY(n1, n2, tree->right, z);
-        return true;
-    }
-    else if (tree->data >= n1 && tree->data <= n2)
-    {
-        cmpNode t(nodes[tree->data.index].z, tree->data.index);
-        z.insert(t);
-        rangeNodeY(n1, n2, tree->left, z);
-        rangeNodeY(n1, n2, tree->right, z);
-        return true;
-    }
-    else if (tree->data > n2)
-    {
-        rangeNodeY(n1, n2, tree->left, z);
-        return true;
-    }
-
-    return false;
-}
-
-bool SpaceRange::rangeNodeZ(const cmpNode &n1, const cmpNode &n2, const AVLNode<cmpNode> *tree, AVLTree<int> &id) const
-{
-    if (!tree)
-    {
-        return true;
-    }
-    else if (tree->data < n1)
-    {
-        rangeNodeZ(n1, n2, tree->right, id);
-        return true;
-    }
-    else if (tree->data >= n1 && tree->data <= n2)
-    {
-        id.insert(tree->data.index);
-        rangeNodeZ(n1, n2, tree->left, id);
-        rangeNodeZ(n1, n2, tree->right, id);
-        return true;
-    }
-    else if (tree->data > n2)
-    {
-        rangeNodeZ(n1, n2, tree->left, id);
+        rangeNodeY(n1, n2, tree->left, id);
         return true;
     }
 
@@ -172,30 +123,30 @@ int main()
            *z = new double[n]();
     for (int i = 0; i < n; i++)
     {
-        x[i] = (int)rand();
-        y[i] = (int)rand();
-        z[i] = (int)rand();
+        x[i] = (double)(rand() * rand() % 100000000) / 100000000;
+        y[i] = (double)(rand() * rand() % 100000000) / 100000000;
+        z[i] = (double)(rand() * rand() % 100000000) / 100000000;
     }
+    SpaceRange sr(n, x, y, z);
+    cout << "over" << endl;
 
     double x1, x2, y1, y2, z1, z2;
     cin >> x1 >> x2 >> y1 >> y2 >> z1 >> z2;
 
     clock_t start = 0, end = 0;
     start = clock();
-    SpaceRange sr(n, x, y, z);
 
-    int *out = NULL, cnt = 0;
-    cnt = sr.range(x1, x2, y1, y2, z1, z2, out);
+    list<int> out;
+    sr.range(x1, x2, y1, y2, z1, z2, out);
+    cout << out.size() << endl;
 
     end = clock();
-    cout << "TIME:\n"
-         << (double)(end - start) / CLOCKS_PER_SEC << endl;
+    cout << "TIME:" << (double)(end - start) / CLOCKS_PER_SEC << endl;
 
     // for (int i = 0; i < cnt; i++)
     // {
-    //     cout << "(" << x10[out[i]] << "," << y[out[i]] << "," << z[out[i]] << ")"  << endl;
+    //     cout << "(" << x[out[i]] << "," << y[out[i]] << "," << z[out[i]] << ")"  << endl;
     // }
 
     return 0;
 }
-
