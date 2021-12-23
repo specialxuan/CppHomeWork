@@ -6,6 +6,7 @@
             "command": "g++",
             "args": [
                 "${file}", // input file
+                "-O2", // optimize file
                 "-o", // generate executable target file
                 "${fileDirname}/exe/${fileBasenameNoExtension}.exe", // output file
                 "-g", // debug information
