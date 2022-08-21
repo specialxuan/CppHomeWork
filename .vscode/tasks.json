@@ -16,9 +16,9 @@
                 "-fexec-charset=GBK", // set the execution character set to GBK
                 "-fopenmp", // enable openmp
                 "-L", // add directory for linking
-                "D:/Program Files/Microsoft SDKs/MPI/Lib/x64", // mpi library
+                "C:/Program Files (x86)/Microsoft SDKs/MPI/Lib/x64", // mpi library
                 "-I", // add directory for header files
-                "D:/Program Files/Microsoft SDKs/MPI/Include" //mpi include
+                "C:/Program Files (x86)/Microsoft SDKs/MPI/Include" //mpi include
             ],
             "type": "process",
             "group": "build",
